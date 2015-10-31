@@ -1,0 +1,32 @@
+html{
+    background-color:dodgerblue;
+}
+body{
+    background-color:dodgerblue;
+}
+h2{
+    color:white;
+    font-size: 50px;
+}
+footer{
+    background:none;
+}
+p{
+    color:white;
+}
+.map{
+    height:100%;
+}
+label{
+    color:white;
+}
+h4{
+    color: white;
+}
+article{
+    margin-right: -15px;
+    margin-left: -15px;
+    background-color: royalblue;
+    color: white;
+    border:solid 1px  #fff0ff;
+}
