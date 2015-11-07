@@ -61,7 +61,7 @@
 
     <div class="col-md-4">
         <h2>Adauga un teren nou</h2>
-        {!! Form::open(['url'=> 'terrain']) !!}
+        {!! Form::open(['url'=> 'terrain', 'class' => 'form_submit']) !!}
         <div class="form-group">
             {!! Form::label('title', 'Name:') !!}
             {!! Form::text('title', null, ['class'=>'form-control']) !!}
@@ -79,7 +79,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::submit('Add Terrain', null, ['class'=>'btn btn-primary']) !!}
+            <button type="submit" class="btn btn-default" id="btn_submit">Salvează</button>
             <button type="button" class="coordonate">log coordonate</button>
         </div>
         <div>
@@ -98,7 +98,8 @@
             {
                 var goo             = google.maps,
                         map_in          = new goo.Map(document.getElementById('map_in'),
-                                { zoom: 12,
+                                { 
+                                    zoom: 12,
                                     center: new goo.LatLng(44.42684, 26.1025)
                                 }),
                         shapes          = [],
@@ -145,18 +146,29 @@
                 goo.event.addDomListener(byId('clear_shapes'), 'click', clearShapes);
                 goo.event.addDomListener(byId('save_encoded'), 'click', function(){
                     var data=IO.IN(shapes,true);byId('data').value=JSON.stringify(data);});
-                goo.event.addDomListener(byId('save_raw'), 'click', function(){
-                    var data=IO.IN(shapes,false);byId('data').value=JSON.stringify(data);
+
+
+                goo.event.addDomListener(byId('btn_submit'), 'click', function(){
+                    console.log(shapes);
+                    var data=IO.IN(shapes,false);
+                    byId('data').value=JSON.stringify(data);
 //                    in situatia asta facem aici ajax-ul de insert
                     saveData(data);
                 });
+
+
                 goo.event.addDomListener(byId('restore'), 'click', function(){
+                    var data = getData();
+                    // [{"type":"RECTANGLE","id":null,"geometry":[[44.462537393755454,26.059348569251597],[44.506136867703425,26.11222027335316]]}]
+                    // {"type":"RECTANGLE","id":null,"geometry":[["44.44682598206631","26.06258390005678"],["44.48333421713131","26.133308387361467"]]}]
+                    console.log(data);
+                    console.log(JSON.parse(data));
                     if(this.shapes){
                         for(var i=0;i<this.shapes.length;++i){
                             this.shapes[i].setMap(null);
                         }
                     }
-                    this.shapes=IO.OUT(JSON.parse(byId('data').value),map_in);
+                    this.shapes=IO.OUT(JSON.parse(data),map_in);
                 });
 
             }
@@ -312,10 +324,11 @@
 @section('scripts')
     <script>
         var save_url = "{!! route('terain-save-coordonate')  !!}";
+
         var saveData = function(data){
             console.log(data)
-
-            $.ajax({
+            window.data_ = data;
+           /* $.ajax({
                 url: save_url,
                 type: 'POST',
                 data: {data: data, _token: $('[name=_token]').val()},
@@ -324,8 +337,58 @@
                 }
             }).done(function(data){
                 console.log('FINISH');
-            });
+           }); */ 
+        }
+
+        jQuery(document).ready(function($) {
+            $(".form_submit").on("submit", function( event ) { 
+               event.preventDefault();
+               var data = { form: $(this).serialize(), coords: window.data_, _token: $('[name=_token]').val() };
+               console.log(data);
+
+               $.ajax({
+                        method: $(this).attr('method'),
+                        url: $(this).attr('action'),
+                        data: data,
+                        dataType: "json",
+                        success: function(data){
+                         // do stuff 
+                         console.log(data);
+                         // location.reload();
+                        },
+                        error: function(data){
+                         // do stuff 
+                         console.log(data);
+                        }
+                 })
+             
+          });
+
+            setTimeout(function(){
+                $('#restore').click()
+            }
+            , 1000);
+        }); 
+
+
+        var getData = function(){
+            var out = [];
+              $.ajax({
+                url: save_url,
+                type: 'POST',
+                async: false,
+                data: {_token: $('[name=_token]').val()},
+                success: function(response){
+                    out = response;
+                    console.log(response);
+                }
+            }).done(function(data){
+                console.log('FINISH');
+           });  
+                    return out;
 
         }
+
+
     </script>
 @stop

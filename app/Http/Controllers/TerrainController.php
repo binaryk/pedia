@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Terrain;
+use App\Models\TerrainCoord;
 use Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -46,43 +47,79 @@ class TerrainController extends Controller
      */
     public function store()
     {
-        $input = Request::all();
-        Terrain::create($input);
-       return redirect('terrain');
+        $form_data = $this->unserializeForm(Input::get('form'));
+        $coords    = Input::get('coords');
+        $terrain   = Terrain::create($form_data + ['type' => $coords[0] ?  $coords[0]['type'] : '']);
+        
+        if(is_array($coords))
+            foreach ($coords as $key => $coord) {
+                foreach ($coord['geometry'] as $k => $coordonate) {
+                    TerrainCoord::create([ 'terrain_id' => $terrain->id, 'lat' => $coordonate[0], 'long' => $coordonate[1] ]);       
+                }
+                
+            }
+
+
+        return \Response::json([ 'message' => 'Inserare cu succes' ]);
     }
+
+    function unserializeForm($str) {
+        $strArray = explode("&", $str);
+        foreach($strArray as $item) {
+            $array = explode("=", $item);
+            $returndata[] = str_replace('+',' ',$array);
+        }
+
+        $out_data  = [];
+        foreach ($returndata as $key => $data) {
+            $out[$data[0]] = $data[1];
+        }
+        $out_data = $out;
+        return  $out_data;
+    }
+
 
     public function storeCoordonate()
     {
-        $data   = Input::all();
-        dd( (string)$data['data']);
-        Terrain::create([
-           'geometry' => $data['data']
-        ]);
-        dd($data);
-        $coords = $data['data'][0];
-        $type   = $coords['type'];
-        $id     = $coords['id'];
-        $geometry     = $coords['geometry'];
+       $out_data = [];
 
-//        formatul datelor
-        /*
-         * "data" => array:1 [
-    0 => array:3 [
-      "type" => "RECTANGLE"
-      "id" => ""
-      "geometry" => array:2 [
-        0 => array:2 [
-          0 => "44.431328264001195"
-          1 => "26.082401275634766"
-        ]
-        1 => array:2 [
-          0 => "44.44309492000842"
-          1 => "26.13046646118164"
-        ]
-      ]
-    ]
-  ]*/
-        dd($coords);
+       $terrains = Terrain::with('coords')->get()->toArray();
+
+
+       foreach ($terrains as $key => $terrain) {
+           if(count($terrain['coords'])){
+               $obj = new \StdClass();
+               $obj->type= $terrain['type'];
+               $obj->id  = null;
+               $obj->geometry = [];
+
+
+
+               $lat1  = (float) $terrain['coords'][0]['lat'];
+               $long1 = (float) $terrain['coords'][0]['long'];
+               $a1 = [];
+               $a1[] = $lat1;
+               $a1[] = $long1;
+               $obj->geometry[] = $a1;
+               $lat2  = (float) $terrain['coords'][1]['lat'];
+               $long2 = (float) $terrain['coords'][1]['long'];
+               $a1 = [];
+               $a1[] = $lat2;
+               $a1[] = $long2;
+               $obj->geometry[] = $a1;
+
+
+/*               foreach ($terrain['coords'] as $k => $coord) {
+                   $obj->geometry = [];
+                   $obj->g1[] = (float) $coord['lat'];
+                   $obj->g1[] = (float) $coord['long'];
+               }*/
+           $out_data[] = $obj;
+           }
+
+       }
+
+      return json_encode($out_data);
     }
 
     /**
