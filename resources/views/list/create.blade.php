@@ -94,9 +94,11 @@
     <div class="col-md-6">
         <div class="map" id="map_in"></div>
         <script>
+        var goo = {};
+        var shapes = [];
             function initialize()
             {
-                var goo             = google.maps,
+                goo             = google.maps,
                         map_in          = new goo.Map(document.getElementById('map_in'),
                                 { 
                                     zoom: 12,
@@ -145,7 +147,9 @@
                 goo.event.addListener(map_in, 'click',clearSelection);
                 goo.event.addDomListener(byId('clear_shapes'), 'click', clearShapes);
                 goo.event.addDomListener(byId('save_encoded'), 'click', function(){
-                    var data=IO.IN(shapes,true);byId('data').value=JSON.stringify(data);});
+                    console.log(data);
+                    var data=IO.IN(shapes,true);
+                    byId('data').value=JSON.stringify(data);});
 
 
                 goo.event.addDomListener(byId('btn_submit'), 'click', function(){
@@ -168,7 +172,8 @@
                             this.shapes[i].setMap(null);
                         }
                     }
-                    this.shapes=IO.OUT(JSON.parse(data),map_in);
+                    console.log(data);
+                    IO.OUT(JSON.parse(data),map_in);
                 });
 
             }
@@ -369,7 +374,7 @@
             }
             , 1000);
         }); 
-
+     
 
         var getData = function(){
             var out = [];

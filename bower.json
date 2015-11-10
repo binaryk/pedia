@@ -1,6 +1,11 @@
 {
   "name": "Laravel Application",
   "dependencies": {
-    "bootstrap-sass-official": "~3.3.1"
+    "bootstrap-sass-official": "~3.3.1",
+    "angular": "~1.4.7",
+    "react": "~0.14.2",
+    "angular-google-maps": "~2.2.1",
+    "underscore": "~1.8.3",
+    "angular-toArrayFilter": "~1.0.1"
   }
 }

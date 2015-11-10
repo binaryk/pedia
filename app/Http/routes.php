@@ -68,3 +68,5 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+require(__DIR__ . "/Routes/Terrain.php");

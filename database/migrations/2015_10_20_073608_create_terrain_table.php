@@ -19,8 +19,8 @@ class CreateTerrainTable extends Migration
             $table->text('history');
             $table->timestamps();
             $table->string('type');
-            $table->string('geometry');
-            $table->integer('radius');
+            $table->text('geometry');
+            $table->float('radius');
             $table->text('style');
 
         });

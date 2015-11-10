@@ -1,6 +1,9 @@
 {
-    "devDependencies": {
-        "gulp": "^3.8.8",
-        "laravel-elixir": "*"
-    }
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "laravel-elixir": "*"
+  },
+  "dependencies": {
+    "angular-google-maps": "^2.2.1"
+  }
 }

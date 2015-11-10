@@ -14,11 +14,14 @@
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~4.0",
-        "phpspec/phpspec": "~2.1"
+        "phpspec/phpspec": "~2.1",
+        "cornford/googlmapper": "2.*"
     },
     "autoload": {
         "classmap": [
-            "database"
+            "database",
+            "app/~Libs",
+            "app/Http/Controllers"
         ],
         "files": [
             "app/helpers.php"
