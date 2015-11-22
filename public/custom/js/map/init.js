@@ -1,11 +1,32 @@
-
-
-     function initialize() {
+  function initialize_search(){
+      goo = google.maps,
+          map_in=new goo.Map(document.getElementById('map_in'), {
+              zoom: 12,
+              center: new goo.LatLng(44.42684, 26.1025)
+          });
+      shapes = [],
+      selected_shape = null,
+      hideDrawingManager=function(){
+              drawman.setMap(null);
+      };
+      clearShapes = function() {
+          for (var i = 0; i < shapes.length; ++i) {
+              shapes[i].setMap(null);
+          }
+          shapes = [];
+      };
+      var map = new google.maps.Map(document.getElementById('map_in'),
+          map_in);
+      goo.event.addDomListener(map, 'tilesloaded', function() {
+         hideDrawingManager();
+      });
+  };
+   function initialize() {
              goo = google.maps,
-             map_in = new goo.Map(document.getElementById('map_in'), {
-                 zoom: 12,
-                 center: new goo.LatLng(44.42684, 26.1025)
-             }),
+             map_in=new goo.Map(document.getElementById('map_in'), {
+                     zoom: 12,
+                  center: new goo.LatLng(44.42684, 26.1025)
+              });
              shapes = [],
              selected_shape = null,
              drawman = new goo.drawing.DrawingManager({
@@ -31,7 +52,16 @@
                  }
                  shapes = [];
              };
-         goo.event.addListener(drawman, 'overlaycomplete', function(e) {
+             hideDrawingManager=function(){
+                 drawman.setMap(null);
+             };
+        var map = new google.maps.Map(document.getElementById('map_in'),
+           map_in);
+         goo.event.addListenerOnce(map, 'tilesloaded', function() {
+                 //$('img[src="http://maps.gstatic.com/mapfiles/drawing.png"]').first().closest('div.gmnoprint').prependTo('#gmaps-tools');
+                 customizeGoogleMapsButtons();
+         });
+         goo.event.addDomListener(drawman, 'overlaycomplete', function(e) {
              var shape = e.overlay;
              shape.type = e.type;
              goo.event.addListener(shape, 'click', function() {
@@ -51,14 +81,14 @@
              var data = IO.IN(shapes, false);
              byId('data').value = JSON.stringify(data);
          });
-         goo.event.addDomListener(byId('restore'), 'click', function() {
-             if (this.shapes) {
-                 for (var i = 0; i < this.shapes.length; ++i) {
-                     this.shapes[i].setMap(null);
-                 }
-             }
-             this.shapes = IO.OUT(JSON.parse(byId('data').value), map_in);
-         });
+         //goo.event.addDomListener(byId('restore'), 'click', function() {
+         //    if (this.shapes) {
+         //        for (var i = 0; i < this.shapes.length; ++i) {
+         //            this.shapes[i].setMap(null);
+         //        }
+         //    }
+         //    this.shapes = IO.OUT(JSON.parse(byId('data').value), map_in);
+         //});
      }
      var IO = {
          //returns array with storable google.maps.Overlay-definitions
@@ -98,10 +128,11 @@
          },
          //returns array with google.maps.Overlays
          OUT: function(arr, //array containg the stored shape-definitions
-             map //map where to draw the shapes
+             map,//map where to draw the shape
+             shapeColor
          ) {
-             var shapes = [],
-                 goo = google.maps,
+             shapes=[];
+             var goo = google.maps,
                  map = map || null,
                  shape, tmp;
              for (var i = 0; i < arr.length; i++) {
@@ -110,7 +141,11 @@
                      case 'CIRCLE':
                          tmp = new goo.Circle({
                              radius: Number(shape.radius),
-                             center: this.pp_.apply(this, shape.geometry)
+                             center: this.pp_.apply(this, shape.geometry),
+                             strokeColor: shapeColor,
+                             strokeOpacity: 1.0,
+                             fillColor:shapeColor,
+                             fillOpacity: 0.35
                          });
                          break;
                      case 'MARKER':
@@ -120,17 +155,32 @@
                          break;
                      case 'RECTANGLE':
                          tmp = new goo.Rectangle({
-                             bounds: this.bb_.apply(this, shape.geometry)
+                             bounds: this.bb_.apply(this, shape.geometry),
+                             strokeColor: shapeColor,
+                             strokeOpacity: 1.0,
+                             fillColor:shapeColor,
+                             fillOpacity: 0.35
+                         });
+                         google.maps.event.addListener(tmp, 'click', function (event) {
+                             getInfo();
                          });
                          break;
                      case 'POLYLINE':
                          tmp = new goo.Polyline({
-                             path: this.ll_(shape.geometry)
+                             path: this.ll_(shape.geometry),
+                             strokeColor: shapeColor,
+                             strokeOpacity: 1.0,
+                             fillColor:shapeColor,
+                             fillOpacity: 0.35
                          });
                          break;
                      case 'POLYGON':
                          tmp = new goo.Polygon({
-                             paths: this.mm_(shape.geometry)
+                             paths: this.mm_(shape.geometry),
+                             strokeColor: shapeColor,
+                             strokeOpacity: 1.0,
+                             fillColor:shapeColor,
+                             fillOpacity: 0.35
                          });
                          break;
                  }
@@ -203,4 +253,9 @@
              }
          }
      };
-     google.maps.event.addDomListener(window, 'load', initialize);
+     if(_config["page"]=="terrain") {
+         google.maps.event.addDomListener(window, 'load', initialize);
+     }
+     else if(_config["page"]=="search"){
+         google.maps.event.addDomListener(window, 'load', initialize_search);
+     }

@@ -35,9 +35,8 @@ app.controller(
         var coords = JSON.parse(item.geometry);
         console.log(coords);
         console.log(map_in);
-        IO.OUT(coords,map_in);
+        initialize();
+        IO.OUT(coords,map_in,"#FF0000");
     };
-
-
 }]);
 

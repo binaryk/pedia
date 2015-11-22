@@ -1,30 +1,30 @@
-<div class="search" ng-hide="cautare">
-	<div class="col-md-12">
-			<label class="control-label">Titlu</label>
-			<input type="text" class="form-control" ng-model="f_title">
-	</div> 
-	<div class="col-md-12">
-			<label class="control-label">Preț</label>
-			<input type="text" class="form-control" ng-model="f_pret">
-	</div>
-	<div class="col-md-12">
-			<label class="control-label">Preț</label>
-			<input type="text" class="form-control" ng-model="f_pret">
-	</div> 
-	<div class="col-md-12">
-	{!!
-		 \Easy\Form\Combobox::make('~layouts.form.controls.comboboxes.combobox')
-	                ->name('id_locatie')
-	                ->caption('Locație')
-	               	->ng_model('f_locatie')
-	                ->class('form-control data-source input-group form-select init-on-update-delete')
-	                ->controlsource('id_locatie')
-	                ->controltype('combobox') 
-	                ->options(\App\Terrain::locatie())
-	                ->out()
-		!!}
-	</div> 
-</div>
+{{--<div class="search" ng-hide="cautare">--}}
+	{{--<div class="col-md-12">--}}
+			{{--<label class="control-label">Titlu</label>--}}
+			{{--<input type="text" class="form-control" ng-model="f_title">--}}
+	{{--</div> --}}
+	{{--<div class="col-md-12">--}}
+			{{--<label class="control-label">Preț</label>--}}
+			{{--<input type="text" class="form-control" ng-model="f_pret">--}}
+	{{--</div>--}}
+	{{--<div class="col-md-12">--}}
+			{{--<label class="control-label">Preț</label>--}}
+			{{--<input type="text" class="form-control" ng-model="f_pret">--}}
+	{{--</div> --}}
+	{{--<div class="col-md-12">--}}
+	{{--{!!--}}
+		 {{--\Easy\Form\Combobox::make('~layouts.form.controls.comboboxes.combobox')--}}
+	                {{--->name('id_locatie')--}}
+	                {{--->caption('Locație')--}}
+	               	{{--->ng_model('f_locatie')--}}
+	                {{--->class('form-control data-source input-group form-select init-on-update-delete')--}}
+	                {{--->controlsource('id_locatie')--}}
+	                {{--->controltype('combobox') --}}
+	                {{--->options(\App\Terrain::locatie())--}}
+	                {{--->out()--}}
+		{{--!!}--}}
+	{{--</div> --}}
+{{--</div>--}}
 
 <div class="col-md-12" style="margin-top: 30px;">
 	<table class="table table-bordered" ng-if="terrains.length > 0" style="background: white;">

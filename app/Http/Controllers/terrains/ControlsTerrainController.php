@@ -69,12 +69,13 @@ class ControlsTerrainController extends Controller
             'id_tip_caracteristici' => 
                 \Easy\Form\Combobox::make('~layouts.form.controls.comboboxes.combobox')
                 ->name('id_tip_caracteristici')
+				->multiple('multiple')
                 ->caption('Caracteristici')
-                ->class('form-control data-source input-group form-select init-on-update-delete')
+                ->class('form-control data-source input-group form-select init-on-update-delete multiple_class')
                 ->controlsource('id_tip_caracteristici')
                 ->controltype('combobox')
                 ->value($model ? $model->id_tip_caracteristici : '')
-                ->options(\App\Terrain::caracteristici())
+                ->options(\App\Models\Characteristic::get())
                 ->out(),
 			'pret' =>
 			 \Easy\Form\Textbox::make('~layouts.form.controls.textboxes.textbox')

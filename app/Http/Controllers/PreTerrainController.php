@@ -27,6 +27,7 @@ class PreTerrainController extends ControlsTerrainController
 	public function save(){
 		$data = Input::get('data');
 		$out  = Terrain::create($data);
+		$out->characteristics()->attach($data['id_tip_caracteristici']);
 
 		return Response::json(['out' => $out]);
 	} 

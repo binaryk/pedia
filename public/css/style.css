@@ -30,3 +30,15 @@ article{
     color: white;
     border:solid 1px  #fff0ff;
 }
+div#terrain_actions{
+    position: absolute;
+    background-color: #00B0E8;
+    margin-left: 15px
+}
+.gmapTools{
+    display:none;
+}
+div#data-tab{
+    height:50px;
+    margin-bottom:50px;
+}
