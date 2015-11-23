@@ -4,6 +4,7 @@
     ng-controller="TerrainSearchCtrl"
 @stop
 @section('content')
+    @include('terrain.infoPopUp')
     <div id="search_div" class="col-md-3">
         <input type="button" value="Cautare noua" class="btn-primary btn-lg col-md-12"/>
         <div class="col-md-12">
@@ -97,11 +98,10 @@
 
     <script>
         var _config = {};
-        _config['r_get_all'] = "{!! route('terrain.all') !!}";
-        _config['r_post_save'] = "{!! route('terrain.save') !!}";
+        _config['r_get_all']    = "{!! route('terrain.all') !!}";
         _config["page"]="search";
+        _config["polygonColor"]="#ff0000";
         function getInfo(){
-            alert(22);
             console.log(_config['current_terrain']);
         }
     </script>

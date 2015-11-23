@@ -23,6 +23,14 @@ app.factory('TerrainService', ['$rootScope','$http','$timeout', function($rootSc
       return promise;
     };
 
+    mixin.getUserTerrains=function(){
+
+        var promise = $http.get($rootScope.config.r_get_byUser).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    }
+
     mixin.show = function(id){
 
     }

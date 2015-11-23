@@ -1,5 +1,8 @@
 <?php
-
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Role, App\Models\User, App\Models\Contact, App\Models\Post, App\Models\Tag, App\Models\PostTag, App\Models\Comment;
+use App\Services\LoremIpsumGenerator;
 /**
  * Created by PhpStorm.
  * User: cristi

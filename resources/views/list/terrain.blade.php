@@ -26,9 +26,10 @@ ng-controller="TerrainCtrl"
         var shapes  = [];
         var mapin   = {};
         var _config = {};
-        _config['r_get_all']    = "{!! route('terrain.all') !!}";
+        _config['r_get_byUser'] = "{!! route('terrain.getUserTerrains') !!}";
         _config['r_post_save']  = "{!! route('terrain.save') !!}";
         _config["page"]="terrain";
+        _config["polygonColor"]="#ff0000";
         $(".multiple_class").select2();
         function customizeGoogleMapsButtons() {
             $(".gmnoprint").css("z-index","1000");

@@ -1,9 +1,13 @@
-  function initialize_search(){
+  var infowindow;
+ function initialize_search(){
       goo = google.maps,
           map_in=new goo.Map(document.getElementById('map_in'), {
               zoom: 12,
               center: new goo.LatLng(44.42684, 26.1025)
           });
+      drawman = new goo.drawing.DrawingManager({
+          map: map_in,
+      }),
       shapes = [],
       selected_shape = null,
       hideDrawingManager=function(){
@@ -30,7 +34,8 @@
              shapes = [],
              selected_shape = null,
              drawman = new goo.drawing.DrawingManager({
-                 map: map_in
+                 map: map_in,
+                 polygonOptions: {editable:true,fillColor: _config["polygonColor"],strokeColor: _config["polygonColor"],strokeWeight:2}
              }),
              byId = function(s) {
                  return document.getElementById(s);
@@ -72,15 +77,15 @@
          });
          goo.event.addListener(map_in, 'click', clearSelection);
          goo.event.addDomListener(byId('clear_shapes'), 'click', clearShapes);
-         goo.event.addDomListener(byId('save_encoded'), 'click', function() {
-             var data = IO.IN(shapes, true);
-            console.log(data);
-             byId('data').value = JSON.stringify(data);
-         });
-         goo.event.addDomListener(byId('save_raw'), 'click', function() {
-             var data = IO.IN(shapes, false);
-             byId('data').value = JSON.stringify(data);
-         });
+         //goo.event.addDomListener(byId('save_encoded'), 'click', function() {
+         //    var data = IO.IN(shapes, true);
+         //   console.log(data);
+         //    byId('data').value = JSON.stringify(data);
+         //});
+         //goo.event.addDomListener(byId('save_raw'), 'click', function() {
+         //    var data = IO.IN(shapes, false);
+         //    byId('data').value = JSON.stringify(data);
+         //});
          //goo.event.addDomListener(byId('restore'), 'click', function() {
          //    if (this.shapes) {
          //        for (var i = 0; i < this.shapes.length; ++i) {
@@ -138,40 +143,9 @@
              for (var i = 0; i < arr.length; i++) {
                  shape = arr[i];
                  switch (shape.type) {
-                     case 'CIRCLE':
-                         tmp = new goo.Circle({
-                             radius: Number(shape.radius),
-                             center: this.pp_.apply(this, shape.geometry),
-                             strokeColor: shapeColor,
-                             strokeOpacity: 1.0,
-                             fillColor:shapeColor,
-                             fillOpacity: 0.35
-                         });
-                         break;
                      case 'MARKER':
                          tmp = new goo.Marker({
                              position: this.pp_.apply(this, shape.geometry)
-                         });
-                         break;
-                     case 'RECTANGLE':
-                         tmp = new goo.Rectangle({
-                             bounds: this.bb_.apply(this, shape.geometry),
-                             strokeColor: shapeColor,
-                             strokeOpacity: 1.0,
-                             fillColor:shapeColor,
-                             fillOpacity: 0.35
-                         });
-                         google.maps.event.addListener(tmp, 'click', function (event) {
-                             getInfo();
-                         });
-                         break;
-                     case 'POLYLINE':
-                         tmp = new goo.Polyline({
-                             path: this.ll_(shape.geometry),
-                             strokeColor: shapeColor,
-                             strokeOpacity: 1.0,
-                             fillColor:shapeColor,
-                             fillOpacity: 0.35
                          });
                          break;
                      case 'POLYGON':
@@ -180,8 +154,18 @@
                              strokeColor: shapeColor,
                              strokeOpacity: 1.0,
                              fillColor:shapeColor,
-                             fillOpacity: 0.35
+                             fillOpacity: 0.35,
+                             position:this.mm_.apply(this,shape.geometry)
                          });
+                         if(_config["page"]=="search") {
+                             google.maps.event.addListener(tmp, 'click', function (event) {
+                                 var content=setupPopUp();
+                                 infowindow=handleInfoWindow(infowindow,map,event);
+                             });
+                             google.maps.event.addListener(map, 'click', function (event) {
+                                 infowindow.close();
+                             });
+                         }
                          break;
                  }
                  tmp.setValues({
@@ -253,7 +237,40 @@
              }
          }
      };
-     if(_config["page"]=="terrain") {
+  function handleInfoWindow(infowindow,map,event,shape){
+      if(isInfoWindowOpen(infowindow)){
+          infowindow.setPosition(event.latLng)
+      }
+      else {
+          infowindow = new google.maps.InfoWindow({
+              content: setupPopUp().html()
+          });
+          getInfo();
+          infowindow.open(map);
+          infowindow.setPosition(event.latLng)
+      }
+      return infowindow;
+  }
+
+  function setupPopUp(){
+      var popupContent=$('#terrainPopUp').clone();
+      popupContent.find('#contact').attr("id","contact2");
+      popupContent.find('#poze').attr("id","poze2");
+      popupContent.find('#contactLink').attr("href","#contact2");
+      popupContent.find('#pozeLink').attr("href","#poze2");
+      popupContent.attr("style","display:block");
+      return popupContent;
+  }
+
+  function isInfoWindowOpen(infoWindow){
+      if(infoWindow!=null) {
+          var map = infoWindow.getMap();
+          return (map !== null && typeof map !== "undefined");
+      }
+      else return false;
+  }
+
+  if(_config["page"]=="terrain") {
          google.maps.event.addDomListener(window, 'load', initialize);
      }
      else if(_config["page"]=="search"){
