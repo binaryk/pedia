@@ -159,7 +159,6 @@
                          });
                          if(_config["page"]=="search") {
                              google.maps.event.addListener(tmp, 'click', function (event) {
-                                 var content=setupPopUp();
                                  infowindow=handleInfoWindow(infowindow,map,event);
                              });
                              google.maps.event.addListener(map, 'click', function (event) {
