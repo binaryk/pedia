@@ -42,3 +42,15 @@ div#data-tab{
     height:50px;
     margin-bottom:50px;
 }
+
+img#terrainPicture{
+    max-width:100%;
+    max-height:100%;
+}
+div#popUpContent{
+    width:550px;
+    height:200px;
+}
+#unlockBtn{
+    left:0;
+}

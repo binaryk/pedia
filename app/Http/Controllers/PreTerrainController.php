@@ -24,12 +24,26 @@ class PreTerrainController extends ControlsTerrainController
 		$data = Terrain::all();
 		return Response::json(['data' => $data]);
 	}
+
+	public function getAprovedTerrains(){
+	$data = Terrain::where('aprobat',1);
+	return Response::json(['data' => $data]);
+
+	}
+
+	public function getPendingTerrains(){
+		$data = Terrain::where('aprobat',null);
+		return Response::json(['data' => $data]);
+
+	}
+
 	public function getUserTerrains(){
 		$data = Terrain::where('user_id',Auth::user()->id)->get();
 		return Response::json(['data' => $data]);
 	}
 
 	public function save(){
+		//De facut verificare cu db daca aprobarea era null si s-a modificat sa se trimita mail cu confirmare
 		$data = Input::get('data');
 		$out  = Terrain::create($data+['user_id'=>Auth::user()->id]);
 		$out->characteristics()->attach($data['id_tip_caracteristici']);

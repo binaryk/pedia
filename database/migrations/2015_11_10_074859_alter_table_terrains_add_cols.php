@@ -29,6 +29,7 @@ class AlterTableTerrainsAddCols extends Migration
             $t->integer('latime_drum_acces');
             $t->integer('constructie_teren');
             $t->integer('detalii_2');
+            $t->tinyInteger('aprobat')->nullable();;
         });
     }
 
@@ -57,6 +58,7 @@ class AlterTableTerrainsAddCols extends Migration
                 'latime_drum_acces',
                 'constructie_teren',
                 'detalii_2',
+                'aprobat',
             ]);
         });
     }

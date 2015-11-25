@@ -56,14 +56,20 @@
                      shapes[i].setMap(null);
                  }
                  shapes = [];
+                 disableElement('#btnPolygon',false);
+                 drawman.drawingControl=true;
              };
              hideDrawingManager=function(){
                  drawman.setMap(null);
              };
+             disableDrawingControl=function(){
+                 drawman.drawingControl=false;
+                 disableElement('#btnPolygon',true);
+                 $('#btnHand').click();
+             };
         var map = new google.maps.Map(document.getElementById('map_in'),
            map_in);
          goo.event.addListenerOnce(map, 'tilesloaded', function() {
-                 //$('img[src="http://maps.gstatic.com/mapfiles/drawing.png"]').first().closest('div.gmnoprint').prependTo('#gmaps-tools');
                  customizeGoogleMapsButtons();
          });
          goo.event.addDomListener(drawman, 'overlaycomplete', function(e) {
@@ -77,23 +83,7 @@
          });
          goo.event.addListener(map_in, 'click', clearSelection);
          goo.event.addDomListener(byId('clear_shapes'), 'click', clearShapes);
-         //goo.event.addDomListener(byId('save_encoded'), 'click', function() {
-         //    var data = IO.IN(shapes, true);
-         //   console.log(data);
-         //    byId('data').value = JSON.stringify(data);
-         //});
-         //goo.event.addDomListener(byId('save_raw'), 'click', function() {
-         //    var data = IO.IN(shapes, false);
-         //    byId('data').value = JSON.stringify(data);
-         //});
-         //goo.event.addDomListener(byId('restore'), 'click', function() {
-         //    if (this.shapes) {
-         //        for (var i = 0; i < this.shapes.length; ++i) {
-         //            this.shapes[i].setMap(null);
-         //        }
-         //    }
-         //    this.shapes = IO.OUT(JSON.parse(byId('data').value), map_in);
-         //});
+         goo.event.addDomListener(drawman,'polygoncomplete',disableDrawingControl);
      }
      var IO = {
          //returns array with storable google.maps.Overlay-definitions
@@ -110,19 +100,6 @@
                      id: shape.id || null
                  };
                  switch (tmp.type) {
-                     case 'CIRCLE':
-                         tmp.radius = shape.getRadius();
-                         tmp.geometry = this.p_(shape.getCenter());
-                         break;
-                     case 'MARKER':
-                         tmp.geometry = this.p_(shape.getPosition());
-                         break;
-                     case 'RECTANGLE':
-                         tmp.geometry = this.b_(shape.getBounds());
-                         break;
-                     case 'POLYLINE':
-                         tmp.geometry = this.l_(shape.getPath(), encoded);
-                         break;
                      case 'POLYGON':
                          tmp.geometry = this.m_(shape.getPaths(), encoded);
                          break;
@@ -143,11 +120,6 @@
              for (var i = 0; i < arr.length; i++) {
                  shape = arr[i];
                  switch (shape.type) {
-                     case 'MARKER':
-                         tmp = new goo.Marker({
-                             position: this.pp_.apply(this, shape.geometry)
-                         });
-                         break;
                      case 'POLYGON':
                          tmp = new goo.Polygon({
                              paths: this.mm_(shape.geometry),
@@ -272,6 +244,6 @@
   if(_config["page"]=="terrain") {
          google.maps.event.addDomListener(window, 'load', initialize);
      }
-     else if(_config["page"]=="search"){
+  else if(_config["page"]=="search"){
          google.maps.event.addDomListener(window, 'load', initialize_search);
-     }
+  }

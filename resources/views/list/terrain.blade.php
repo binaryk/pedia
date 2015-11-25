@@ -43,7 +43,6 @@ ng-controller="TerrainCtrl"
 
                 // Now remove the Circle button
                 $(".remove").remove();
-
                 // ID the Hand button
                 newObj = $(this).find("[title='Stop drawing']");
                 newObj.attr('id', 'btnStop');
@@ -54,13 +53,6 @@ ng-controller="TerrainCtrl"
                 newObj.attr('id', 'btnMarker');
                 newObj.addClass('gmapTools');
                 // ID the line button
-                newObj = $(this).find("[title='Draw a line']");
-                newObj.attr('id', 'btnLine');
-                newObj.hide();
-                // ID the Rectangle Button
-                newObj = $(this).find("[title='Draw a rectangle']");
-                newObj.attr('id', 'btnRectangle');
-                newObj.hide();
                 // ID the Polygon button
                 newObj = $(this).find("[title='Draw a shape']");
                 newObj.attr('id', 'btnShape');
@@ -73,6 +65,9 @@ ng-controller="TerrainCtrl"
         $('#btnHand').click(function(){
             $('#btnStop').click();
         });
+        function disableElement(elenentID,value){
+            $(elenentID).prop('disabled', value);
+        }
 
     </script>
     <script type="text/javascript" src="{!! asset('custom/js/map/init.js') !!}"></script>
