@@ -36,6 +36,7 @@ Route::post('terrain', 'TerrainController@store');
 Route::post('terain-save-coordonate', [ 'as' => 'terain-save-coordonate', 'uses' =>
 	'TerrainController@storeCoordonate']);
 
+Route::get('terrain/search', ['as'=>'vendor.search', 'uses' => 'Search\SearchController@index']);
 
 //
 //// Comment

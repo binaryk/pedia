@@ -1,15 +1,41 @@
-
-
-     function initialize() {
+  var infowindow;
+ function initialize_search(){
+      goo = google.maps,
+          map_in=new goo.Map(document.getElementById('map_in'), {
+              zoom: 12,
+              center: new goo.LatLng(44.42684, 26.1025)
+          });
+      drawman = new goo.drawing.DrawingManager({
+          map: map_in,
+      }),
+      shapes = [],
+      selected_shape = null,
+      hideDrawingManager=function(){
+              drawman.setMap(null);
+      };
+      clearShapes = function() {
+          for (var i = 0; i < shapes.length; ++i) {
+              shapes[i].setMap(null);
+          }
+          shapes = [];
+      };
+      var map = new google.maps.Map(document.getElementById('map_in'),
+          map_in);
+      goo.event.addDomListener(map, 'tilesloaded', function() {
+         hideDrawingManager();
+      });
+  };
+   function initialize() {
              goo = google.maps,
-             map_in = new goo.Map(document.getElementById('map_in'), {
-                 zoom: 12,
-                 center: new goo.LatLng(44.42684, 26.1025)
-             }),
+             map_in=new goo.Map(document.getElementById('map_in'), {
+                     zoom: 12,
+                  center: new goo.LatLng(44.42684, 26.1025)
+              });
              shapes = [],
              selected_shape = null,
              drawman = new goo.drawing.DrawingManager({
-                 map: map_in
+                 map: map_in,
+                 polygonOptions: {editable:true,fillColor: _config["polygonColor"],strokeColor: _config["polygonColor"],strokeWeight:2}
              }),
              byId = function(s) {
                  return document.getElementById(s);
@@ -30,8 +56,23 @@
                      shapes[i].setMap(null);
                  }
                  shapes = [];
+                 disableElement('#btnPolygon',false);
+                 drawman.drawingControl=true;
              };
-         goo.event.addListener(drawman, 'overlaycomplete', function(e) {
+             hideDrawingManager=function(){
+                 drawman.setMap(null);
+             };
+             disableDrawingControl=function(){
+                 drawman.drawingControl=false;
+                 disableElement('#btnPolygon',true);
+                 $('#btnHand').click();
+             };
+        var map = new google.maps.Map(document.getElementById('map_in'),
+           map_in);
+         goo.event.addListenerOnce(map, 'tilesloaded', function() {
+                 customizeGoogleMapsButtons();
+         });
+         goo.event.addDomListener(drawman, 'overlaycomplete', function(e) {
              var shape = e.overlay;
              shape.type = e.type;
              goo.event.addListener(shape, 'click', function() {
@@ -42,23 +83,7 @@
          });
          goo.event.addListener(map_in, 'click', clearSelection);
          goo.event.addDomListener(byId('clear_shapes'), 'click', clearShapes);
-         goo.event.addDomListener(byId('save_encoded'), 'click', function() {
-             var data = IO.IN(shapes, true);
-            console.log(data);
-             byId('data').value = JSON.stringify(data);
-         });
-         goo.event.addDomListener(byId('save_raw'), 'click', function() {
-             var data = IO.IN(shapes, false);
-             byId('data').value = JSON.stringify(data);
-         });
-         goo.event.addDomListener(byId('restore'), 'click', function() {
-             if (this.shapes) {
-                 for (var i = 0; i < this.shapes.length; ++i) {
-                     this.shapes[i].setMap(null);
-                 }
-             }
-             this.shapes = IO.OUT(JSON.parse(byId('data').value), map_in);
-         });
+         goo.event.addDomListener(drawman,'polygoncomplete',disableDrawingControl);
      }
      var IO = {
          //returns array with storable google.maps.Overlay-definitions
@@ -75,19 +100,6 @@
                      id: shape.id || null
                  };
                  switch (tmp.type) {
-                     case 'CIRCLE':
-                         tmp.radius = shape.getRadius();
-                         tmp.geometry = this.p_(shape.getCenter());
-                         break;
-                     case 'MARKER':
-                         tmp.geometry = this.p_(shape.getPosition());
-                         break;
-                     case 'RECTANGLE':
-                         tmp.geometry = this.b_(shape.getBounds());
-                         break;
-                     case 'POLYLINE':
-                         tmp.geometry = this.l_(shape.getPath(), encoded);
-                         break;
                      case 'POLYGON':
                          tmp.geometry = this.m_(shape.getPaths(), encoded);
                          break;
@@ -98,40 +110,33 @@
          },
          //returns array with google.maps.Overlays
          OUT: function(arr, //array containg the stored shape-definitions
-             map //map where to draw the shapes
+             map,//map where to draw the shape
+             shapeColor
          ) {
-             var shapes = [],
-                 goo = google.maps,
+             shapes=[];
+             var goo = google.maps,
                  map = map || null,
                  shape, tmp;
              for (var i = 0; i < arr.length; i++) {
                  shape = arr[i];
                  switch (shape.type) {
-                     case 'CIRCLE':
-                         tmp = new goo.Circle({
-                             radius: Number(shape.radius),
-                             center: this.pp_.apply(this, shape.geometry)
-                         });
-                         break;
-                     case 'MARKER':
-                         tmp = new goo.Marker({
-                             position: this.pp_.apply(this, shape.geometry)
-                         });
-                         break;
-                     case 'RECTANGLE':
-                         tmp = new goo.Rectangle({
-                             bounds: this.bb_.apply(this, shape.geometry)
-                         });
-                         break;
-                     case 'POLYLINE':
-                         tmp = new goo.Polyline({
-                             path: this.ll_(shape.geometry)
-                         });
-                         break;
                      case 'POLYGON':
                          tmp = new goo.Polygon({
-                             paths: this.mm_(shape.geometry)
+                             paths: this.mm_(shape.geometry),
+                             strokeColor: shapeColor,
+                             strokeOpacity: 1.0,
+                             fillColor:shapeColor,
+                             fillOpacity: 0.35,
+                             position:this.mm_.apply(this,shape.geometry)
                          });
+                         if(_config["page"]=="search") {
+                             google.maps.event.addListener(tmp, 'click', function (event) {
+                                 infowindow=handleInfoWindow(infowindow,map,event);
+                             });
+                             google.maps.event.addListener(map, 'click', function (event) {
+                                 infowindow.close();
+                             });
+                         }
                          break;
                  }
                  tmp.setValues({
@@ -203,4 +208,42 @@
              }
          }
      };
-     google.maps.event.addDomListener(window, 'load', initialize);
+  function handleInfoWindow(infowindow,map,event,shape){
+      if(isInfoWindowOpen(infowindow)){
+          infowindow.setPosition(event.latLng)
+      }
+      else {
+          infowindow = new google.maps.InfoWindow({
+              content: setupPopUp().html()
+          });
+          getInfo();
+          infowindow.open(map);
+          infowindow.setPosition(event.latLng)
+      }
+      return infowindow;
+  }
+
+  function setupPopUp(){
+      var popupContent=$('#terrainPopUp').clone();
+      popupContent.find('#contact').attr("id","contact2");
+      popupContent.find('#poze').attr("id","poze2");
+      popupContent.find('#contactLink').attr("href","#contact2");
+      popupContent.find('#pozeLink').attr("href","#poze2");
+      popupContent.attr("style","display:block");
+      return popupContent;
+  }
+
+  function isInfoWindowOpen(infoWindow){
+      if(infoWindow!=null) {
+          var map = infoWindow.getMap();
+          return (map !== null && typeof map !== "undefined");
+      }
+      else return false;
+  }
+
+  if(_config["page"]=="terrain") {
+         google.maps.event.addDomListener(window, 'load', initialize);
+     }
+  else if(_config["page"]=="search"){
+         google.maps.event.addDomListener(window, 'load', initialize_search);
+  }

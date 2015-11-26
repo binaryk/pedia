@@ -4,13 +4,23 @@
 ng-controller="TerrainCtrl"
 @stop
 @section('content')
-<div class="col-md-12">
+<<<<<<< HEAD
+
 <div class="navigator-const">
+    @include('list.partials.tabs') 
 </div>
 
 
 <div class="map-build">
     <div class="map" id="map_in"></div>
+=======
+<div class="col-md-12">
+    <div class="map" id="map_in"></div>
+</div>
+
+<div id="terrain_actions" class="col-md-3">
+    @include('list.partials.tabs')
+>>>>>>> 921111a9900cd376fbeda286cda97838185c06c4
 </div>
 
 @stop
@@ -76,4 +86,19 @@ ng-controller="TerrainCtrl"
     <script type="text/javascript" src="{!! asset( 'custom/js/angular/services/FormService.js') !!}"></script>
     <script type="text/javascript" src="{!! asset( 'custom/js/angular/controllers/TerrainCtrl.js') !!}"></script>
     <script type="text/javascript" src="{!! asset( 'custom/js/angular/controllers/terrain_coords.js') !!}"></script>
+<<<<<<< HEAD
+
+    <script type="text/javascript">
+    var goo     = {};
+    var shapes  = [];
+    var mapin   = {};
+    var _config = {};
+    _config['r_get_all']    = "{!! route('terrain.all') !!}";
+    _config['r_post_save']  = "{!! route('terrain.save') !!}";
+
+        
+        
+    </script>
+=======
+>>>>>>> 921111a9900cd376fbeda286cda97838185c06c4
 @stop

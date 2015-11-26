@@ -6,14 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Terrain extends Model
 {
-    protected $guarded = ['_token'];
+    protected $guarded = ['_token','id_tip_caracteristici'];
 
     public function coords(){
     	return $this->hasMany('\App\Models\TerrainCoord', 'terrain_id');
-    } 
+    }
 
+	public function characteristics(){
+		return $this->belongsToMany('App\Models\Characteristic', 'characteristics_terrain', 'id_terrain', 'id_characteristics');
+	}
 
-    public static function tip(){
+	public static function tip(){
     	return [
     		'0' => '-- Alege --',
     		'1' =>	'Terenurile cu destinatie agricola',
@@ -23,33 +26,7 @@ class Terrain extends Model
     		'5' =>	'Terenurile cu destinatie speciala ',
 
     	];
-    } 
-
-    public static function caracteristici(){
-    	return [
-    	'0' => '-- Alege --',
-    	'1'	   =>  'acces drum asfalt',
-    	'2'	   =>  'alimentare apa',
-    	'3'	   =>  'cadastru',
-    	'4'	   =>  'canalizare',
-    	'5'	   =>  'autoriz. construct.',
-    	'6'	   =>  'certificat urbanism',
-    	'7'	   =>  'constructie teren',
-    	'8'	   =>  'curent electric',
-    	'9'	   =>  'CUT',
-    	'10'   =>  'ingradit',
-    	'11'   =>  'intabulare',
-    	'12'   =>  'gaze',
-    	'13'   =>  'liber',
-    	'14'   =>  'parcelabil',
-    	'15'   =>  'POT',
-    	'16'   =>  'stradal',
-    	'17'   =>  'PUZ',
-    	'18'   =>  'PUD',
-    	];
-    } 
-
-
+    }
     public static function locatie(){
     	return 
     	[

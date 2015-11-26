@@ -10,7 +10,7 @@ app.controller(
 
 
     scope.$watch('config', function(n, o){
-        TerrainService.get().then(function(data){
+        TerrainService.getUserTerrains().then(function(data){
             console.log(data.data);
             $scope.terrains = data.data;
             $compile($('.my_form').contents())($scope);
@@ -35,9 +35,8 @@ app.controller(
         var coords = JSON.parse(item.geometry);
         console.log(coords);
         console.log(map_in);
-        IO.OUT(coords,map_in);
+        initialize();
+        IO.OUT(coords,map_in, _config["polygonColor"]);
     };
-
-
 }]);
 
