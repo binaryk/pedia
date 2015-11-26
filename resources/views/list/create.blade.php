@@ -82,6 +82,7 @@
             <button type="submit" class="btn btn-default" id="btn_submit">Salvează</button>
             <button type="button" class="coordonate">log coordonate</button>
         </div>
+        
         <div>
             <input id="clear_shapes" value="clear shapes"    type="button"  />
             <input id="save_encoded" value="save encoded(IO.IN(shapes,true))"    type="button" />
@@ -320,6 +321,8 @@
 
             }
             google.maps.event.addDomListener(window, 'load', initialize);
+            
+            
         </script>
     </div>
     {!! Form::close() !!}

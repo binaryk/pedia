@@ -5,12 +5,12 @@ ng-controller="TerrainCtrl"
 @stop
 @section('content')
 
-<div class="col-md-3">
+<div class="navigator-const">
     @include('list.partials.tabs') 
 </div>
 
 
-<div class="col-md-9">
+<div class="map-build">
     <div class="map" id="map_in"></div>
 </div>
 
@@ -36,5 +36,7 @@ ng-controller="TerrainCtrl"
     _config['r_get_all']    = "{!! route('terrain.all') !!}";
     _config['r_post_save']  = "{!! route('terrain.save') !!}";
 
+        
+        
     </script>
 @stop

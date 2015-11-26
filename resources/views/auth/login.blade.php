@@ -1,20 +1,17 @@
 @extends('front.template')
 
 @section('main')
-	<div class="row">
-		<div class="container">
+
+		<div class="container-login">
 			<div class="col-md-6 col-md-offset-3">
 				@if(session()->has('error'))
 					@include('partials/error', ['type' => 'danger', 'message' => session('error')])
 				@endif	
-				<hr>	
-				<h2 class="intro-text text-center">{{ trans('front/login.connection') }}</h2>
-				<hr>
-				<p>{{ trans('front/login.text') }}</p>				
+	
 				
 				{!! Form::open(['url' => 'auth/login', 'method' => 'post', 'role' => 'form']) !!}	
-				
-				<div class="row">
+				<input type="hidden" name="_token" value="{!! csrf_token() !!}">
+				<div class="row login-box">
 
 					{!! Form::control('text', 6, 'log', $errors, trans('front/login.log')) !!}
 					{!! Form::control('password', 6, 'password', $errors, trans('front/login.password')) !!}
@@ -29,15 +26,9 @@
 				
 				{!! Form::close() !!}
 
-				<div class="text-center">
-					<hr>
-						<h2 class="intro-text text-center">{{ trans('front/login.register') }}</h2>
-					<hr>	
-					<p>{{ trans('front/login.register-info') }}</p>
-					{!! link_to('auth/register', trans('front/login.registering'), ['class' => 'btn btn-default']) !!}
-				</div>
 			</div>
 			</div>
-	</div>
+
+	
 @stop
 
