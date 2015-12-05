@@ -127,7 +127,8 @@
                              strokeOpacity: 1.0,
                              fillColor:shapeColor,
                              fillOpacity: 0.35,
-                             position:this.mm_.apply(this,shape.geometry)
+                             position:this.mm_.apply(this,shape.geometry),
+                             editable:true
                          });
                          if(_config["page"]=="search") {
                              google.maps.event.addListener(tmp, 'click', function (event) {

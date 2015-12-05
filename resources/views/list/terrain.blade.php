@@ -4,8 +4,9 @@
 ng-controller="TerrainCtrl"
 @stop
 @section('content')
-<div class="col-md-12">
+
 <div class="navigator-const">
+    @include('list.partials.tabs')
 </div>
 
 
@@ -29,6 +30,7 @@ ng-controller="TerrainCtrl"
         var _config = {};
         _config['r_get_byUser'] = "{!! route('terrain.getUserTerrains') !!}";
         _config['r_post_save']  = "{!! route('terrain.save') !!}";
+        _config['r_post_edit']  = "{!! route('terrain.edit') !!}";
         _config["page"]="terrain";
         _config["polygonColor"]="#ff0000";
         $(".multiple_class").select2();

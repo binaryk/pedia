@@ -49,6 +49,15 @@ class PreTerrainController extends ControlsTerrainController
 		$out->characteristics()->attach($data['id_tip_caracteristici']);
 
 		return Response::json(['out' => $out]);
-	} 
+	}
+
+	public function edit()
+	{
+		$id   = Input::get('id');
+		$data = Input::get('data');
+		$this->model = Terrain::find($id);
+		$this->model->update($data);
+		return Response::json(['success' => true]);
+	}
 
 }

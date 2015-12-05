@@ -35,8 +35,8 @@ app.factory('TerrainService', ['$rootScope','$http','$timeout', function($rootSc
 
     }
 
-    mixin.edit = function(id, data){
-        var promise = $http.post($rootScope.config.r_get_revenue_modal_edit, {revenue: data}).then(function(response){
+    mixin.put = function(id, data){
+        var promise = $http.post($rootScope.config.r_post_edit, {id: id, data: data}).then(function(response){
             return response.data;
         });
         return promise;  
@@ -52,7 +52,7 @@ app.factory('TerrainService', ['$rootScope','$http','$timeout', function($rootSc
             return response.data;
         });
         return promise;  
-    } 
+    }
 
     return mixin;
 
