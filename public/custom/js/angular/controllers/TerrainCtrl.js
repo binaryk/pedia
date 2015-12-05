@@ -23,9 +23,9 @@ app.controller(
     $scope.saveTerrain = function(){
         var data = FormService.datasource();
         var tc   = new Terrain([{d: 0}]);
-        var geometry = JSON.stringify(IO.IN(shapes, true));
-        data['geometry'] = geometry;
         if($scope.edit){
+            var geometry = JSON.stringify(IO.IN(shapes, true));
+            data['geometry'] = geometry;
           TerrainService.put($scope.currentTerrain.id, data).then(function(data){
             swal('Succes!', 'Datele au fost actualizate cu succes.', 'success');
           });
@@ -39,7 +39,7 @@ app.controller(
 
     };
 
-    $scope.edit = function(item){
+    $scope.editTerrain = function(item){
         $scope.currentTerrain=item;
         $scope.edit          = true;
         var coords = JSON.parse(item.geometry);
@@ -55,9 +55,17 @@ app.controller(
         drawman.drawingControl=false;
         disableElement('#btnPolygon',true);
         $('#btnHand').click();
-
     };
 
+    $scope.deleteTerrain=function(item){
+        TerrainService.destroy(item.id, data).then(function(data){
+            var index = $scope.terrains.indexOf(item);
+            $scope.terrains.splice(index, 1);
+            swal('Succes!', 'Datele au fost sterse.', 'success');
+        });
+
+
+    };
       $scope.init_on_update = function (node) {
         var controls   = $($scope.classSourceControls);
         if( controls.length > 0)

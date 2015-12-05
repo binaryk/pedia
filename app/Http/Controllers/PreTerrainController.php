@@ -60,4 +60,12 @@ class PreTerrainController extends ControlsTerrainController
 		return Response::json(['success' => true]);
 	}
 
+	public function delete()
+	{
+		$id   = Input::get('id');
+		$this->model = Terrain::find($id);
+		$this->model->delete();
+		return Response::json(['success' => true]);
+	}
+
 }

@@ -31,6 +31,7 @@ ng-controller="TerrainCtrl"
         _config['r_get_byUser'] = "{!! route('terrain.getUserTerrains') !!}";
         _config['r_post_save']  = "{!! route('terrain.save') !!}";
         _config['r_post_edit']  = "{!! route('terrain.edit') !!}";
+        _config['r_post_revenue_delete']  = "{!! route('terrain.delete') !!}";
         _config["page"]="terrain";
         _config["polygonColor"]="#ff0000";
         $(".multiple_class").select2();
@@ -61,6 +62,7 @@ ng-controller="TerrainCtrl"
                 newObj.attr('id', 'btnShape');
                 newObj.addClass('gmapTools');
             });
+            $(".gmnoprint").hide();
         };
         $('#btnPolygon').click(function(){
            $('#btnShape').click();
