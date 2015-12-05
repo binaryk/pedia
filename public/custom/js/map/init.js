@@ -138,6 +138,11 @@
                                  infowindow.close();
                              });
                          }
+                         else if(_config["page"]=="terrain"){
+                             google.maps.event.addListener(tmp, 'click', function (event) {
+                                 $('ul.nav-tabs a[href="#proiect"]').tab('show');
+                             });
+                         }
                          break;
                  }
                  tmp.setValues({
