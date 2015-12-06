@@ -6,17 +6,29 @@ app.controller(
             var f_title = '';
 
             $scope.searchTerrains = [];
+            $scope.shapes=[];
+            $scope.currentTerrain={};
+
             console.log('TerrainSearchCtrl.js');
 
             scope.$watch('config', function(n, o){
                 TerrainService.get().then(function(data){
                     console.log(data.data);
                     $scope.searchTerrains = data.data;
+                    $scope.getAllShapes();
                     $compile($('.my_form').contents())($scope);
                 });
             });
-            $scope.currentTerrain={};
+
+            $scope.getAllShapes=function(){
+                angular.forEach($scope.searchTerrains, function(value, key) {
+                    this.push(JSON.parse(value.geometry)[0]);
+                }, $scope.shapes);
+                IO.OUT($scope.shapes,map_in,_config["polygonColor"]);
+            };
+
             $scope.click = function(item){
+
                 $scope.currentTerrain=item;
                 console.log(item);
                 _config['current_terrain'] = item;

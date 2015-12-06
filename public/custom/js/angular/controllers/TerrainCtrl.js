@@ -23,9 +23,9 @@ app.controller(
     $scope.saveTerrain = function(){
         var data = FormService.datasource();
         var tc   = new Terrain([{d: 0}]);
+        var geometry = JSON.stringify(IO.IN(shapes, true));
+        data['geometry'] = geometry;
         if($scope.edit){
-            var geometry = JSON.stringify(IO.IN(shapes, true));
-            data['geometry'] = geometry;
           TerrainService.put($scope.currentTerrain.id, data).then(function(data){
             swal('Succes!', 'Datele au fost actualizate cu succes.', 'success');
           });

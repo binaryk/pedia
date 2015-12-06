@@ -128,11 +128,30 @@
                              fillColor:shapeColor,
                              fillOpacity: 0.35,
                              position:this.mm_.apply(this,shape.geometry),
-                             editable:true
                          });
+
+                         tmp.getPosition = function() {
+                             var lastPath = null,
+                                 lastCenter = null;
+                             var path = this.getPath();
+                             if (lastPath == path) {
+                                 return lastCenter;
+                             }
+                             lastPath = path;
+                             var bounds = new google.maps.LatLngBounds();
+                             path.forEach(function(latlng, i) {
+                                 bounds.extend(latlng);
+                             });
+
+                             lastCenter = bounds.getCenter();
+                             return lastCenter;
+                         };
+
                          if(_config["page"]=="search") {
                              google.maps.event.addListener(tmp, 'click', function (event) {
                                  infowindow=handleInfoWindow(infowindow,map,event);
+                                 map.center=tmp.getPosition();
+                                 map.zoom=12;
                              });
                              google.maps.event.addListener(map, 'click', function (event) {
                                  infowindow.close();
@@ -141,6 +160,7 @@
                          else if(_config["page"]=="terrain"){
                              google.maps.event.addListener(tmp, 'click', function (event) {
                                  $('ul.nav-tabs a[href="#proiect"]').tab('show');
+                                 tmp.setEditable(true);
                              });
                          }
                          break;
@@ -151,6 +171,7 @@
                  })
                  shapes.push(tmp);
              }
+             var clusterer = new MarkerClusterer(map, shapes);
              return shapes;
          },
          l_: function(path, e) {
