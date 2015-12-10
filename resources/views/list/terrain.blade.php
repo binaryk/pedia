@@ -18,9 +18,15 @@ ng-controller="TerrainCtrl"
 @section('custom-styles')
 {!! HTML::script('//maps.google.com/maps/api/js?sensor=true&libraries=drawing,geometry&.js') !!}
 {!! HTML::script('//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.js') !!}
+<link rel="stylesheet" type="text/css" href="{{ asset('packages/fileinput/css/fileinput.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('admin/css/fileinput/fileinput.css') }}">
 <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1-rc.1/css/select2.min.css" rel="stylesheet" />
+<style>
+    span.select2{
+        width: 100% !important;
+    }
+</style>
 @stop
-
 @section('custom-scripts')
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1-rc.1/js/select2.min.js"></script>
     <script type="text/javascript">
@@ -80,4 +86,5 @@ ng-controller="TerrainCtrl"
     <script type="text/javascript" src="{!! asset( 'custom/js/angular/services/FormService.js') !!}"></script>
     <script type="text/javascript" src="{!! asset( 'custom/js/angular/controllers/TerrainCtrl.js') !!}"></script>
     <script type="text/javascript" src="{!! asset( 'custom/js/angular/controllers/terrain_coords.js') !!}"></script>
+    <script type="text/javascript" src = "{{asset( 'packages/fileinput/js/fileinput.min.js') }}"></script>
 @stop

@@ -1,11 +1,11 @@
 <div class="alert alert-success" role="alert">
         
-        <h2>
+        <h5>
             Formularul a fost completat cu succes!
-        </h2>
-        <h3>
+        </h5>
+        <h4>
             Salvați ? 
-        </h3>
+        </h4>
 
         <button type="submit" class="btn btn-success">Salvează</button>
 

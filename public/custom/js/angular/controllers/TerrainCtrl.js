@@ -19,27 +19,41 @@ app.controller(
         });
     });   
 
+    $scope.add_ = function () {
+      console.log('add');
+      $scope.currentTerrain=null;
+      $scope.edit          = false;
+      $('#clear_shapes').click();
+      //toastr.info('Intorduceți datele pentru acest teren.');
+
+    }
 
     $scope.saveTerrain = function(){
         var data = FormService.datasource();
         var tc   = new Terrain([{d: 0}]);
         var geometry = JSON.stringify(IO.IN(shapes, true));
-        data['geometry'] = geometry;
-        if($scope.edit){
-          TerrainService.put($scope.currentTerrain.id, data).then(function(data){
-            swal('Succes!', 'Datele au fost actualizate cu succes.', 'success');
-          });
+        if(IO.IN(shapes, true).length == 0){
+          toastr.error("Vă rugăm să desenați terenul.")
         }else{
-          TerrainService.store(data).then(function(data){
-            $scope.terrains.push(data.out);
-            swal('Succes!', 'Datele au fost salvate cu succes. Acum puteți vizualiza terenul în listă.', 'success');
-          });
-          FormService.emptyControls();
+          data['geometry'] = geometry;
+          if($scope.edit){
+            TerrainService.put($scope.currentTerrain.id, data).then(function(data){
+              swal('Succes!', 'Datele au fost actualizate cu succes.', 'success');
+            });
+          }else{
+            TerrainService.store(data).then(function(data){
+              $scope.terrains.push(data.out);
+              swal('Succes!', 'Datele au fost salvate cu succes. Acum puteți vizualiza terenul în listă.', 'success');
+            });
+            FormService.emptyControls();
+          }
         }
+
 
     };
 
     $scope.editTerrain = function(item){
+      console.log('edit');
         $scope.currentTerrain=item;
         $scope.edit          = true;
         var coords = JSON.parse(item.geometry);
@@ -58,11 +72,31 @@ app.controller(
     };
 
     $scope.deleteTerrain=function(item){
-        TerrainService.destroy(item.id, data).then(function(data){
-            var index = $scope.terrains.indexOf(item);
-            $scope.terrains.splice(index, 1);
-            swal('Succes!', 'Datele au fost sterse.', 'success');
-        });
+      swal({   title: "Sunteti sigur?",
+            text: "Doriti sa ștergeți această secțiune ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "DA, sunt sigur!",
+            cancelButtonText: "NU, inchide!",
+            closeOnConfirm: false,
+            closeOnCancel: false },
+          function(isConfirm){
+            if (isConfirm) {
+              $timeout(function(){
+                TerrainService.destroy(item.id, data).then(function(data){
+                  var index = $scope.terrains.indexOf(item);
+                  $scope.terrains.splice(index, 1);
+                  swal('Succes!', 'Terenul a fost sters.', 'success');
+                });
+              }, 200);
+            }
+            else {
+              swal("Cancelled", "Terenul nu a fost ștears.", "error");
+            }
+          });
+
+
 
 
     };

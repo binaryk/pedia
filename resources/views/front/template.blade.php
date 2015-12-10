@@ -13,11 +13,12 @@
 		{!! HTML::style('components/sweetalert/dist/sweetalert.css') !!}
 		{!! HTML::style('css/auth/style.css') !!}
 		{!! HTML::style('css/style.css') !!}
-		@yield('custom-styles')
+		{!! HTML::style('components/toastr/toastr.css') !!}
 		{!! HTML::style('https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js') !!}
 		{!! HTML::style('https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js') !!}
 		{!! HTML::style('http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800') !!}
 		{!! HTML::style('http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic') !!}
+		@yield('custom-styles')
 	</head>
 	  <body @yield('body-attributes')>
 		@yield('main')
@@ -27,6 +28,9 @@
 		{!! HTML::script('components/sweetalert/dist/sweetalert.min.js') !!}
 		{!! HTML::script('custom/js/angular/~config.js') !!}
 		{!! HTML::script('js/plugins.js') !!}
+		{!! HTML::script('components/toastr/toastr.min.js') !!}
+		{!! HTML::script('custom/js/general.js') !!}
+
 		@yield('custom-scripts')
 		@yield('scripts')
 	  </body>

@@ -1,4 +1,7 @@
 <div class="col-md-12">
+	<span class="btn btn-sm btn-default" ng-click="add_()">Adaugă teren</span>
+</div>
+<div class="col-md-12">
 	<label class="control-label">Titlu teren</label>
 	<input type="text" class="form-control" ng-model="f_title">
 </div>

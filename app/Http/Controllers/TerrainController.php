@@ -45,8 +45,6 @@ class TerrainController extends PreTerrainController
                 }
                 
             }
-
-
         return \Response::json([ 'message' => 'Inserare cu succes' ]);
     }
 

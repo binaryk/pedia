@@ -43,19 +43,15 @@
             </div>
         </nav>
         <div class="main-container">
-            
-           
-               
-                    
-                      
+
 		<div class="container-login">
 			<div class="col-md-6 col-md-offset-3">
 				@if(session()->has('error'))
 					@include('partials/error', ['type' => 'danger', 'message' => session('error')])
-				@endif	
-	
-				
-				{!! Form::open(['url' => 'auth/login', 'method' => 'post', 'role' => 'form']) !!}	
+				@endif
+
+
+				{!! Form::open(['url' => 'auth/login', 'method' => 'post', 'role' => 'form']) !!}
 				<input type="hidden" name="_token" value="{!! csrf_token() !!}">
 				<div class="row login-box">
 
@@ -63,21 +59,21 @@
 					{!! Form::control('password', 6, 'password', $errors, trans('front/login.password')) !!}
 					{!! Form::submit(trans('front/form.send'), ['col-lg-12']) !!}
 					{!! Form::check('memory', trans('front/login.remind')) !!}
-					{!! Form::text('address', '', ['class' => 'hpet']) !!}		  
-					<div class="col-lg-12">					
+					{!! Form::text('address', '', ['class' => 'hpet']) !!}
+					<div class="col-lg-12">
 						{!! link_to('password/email', trans('front/login.forget')) !!}
 					</div>
 
 				</div>
-				
+
 				{!! Form::close() !!}
 
 			</div>
 			</div>
-	 
-                   
-               
-           
+
+
+
+
         </div>
     </div>
 
@@ -101,7 +97,7 @@
                         <li>
                             <div class="item">
                                 <a href="#">
-                                    <div class="icon-F"> 
+                                    <div class="icon-F">
                                     <svg version="1.1" FILL="#428bca" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="32px" height="32px" viewBox="0 0 45.682 45.682" style="enable-background:new 0 0 45.682 45.682;"
 	 xml:space="preserve">
@@ -126,7 +122,7 @@
                                     <label>Proprietari</label>
                                 </a>
                             </div>
-                        </li>  
+                        </li>
                         <li>
                             <div class="item">
                                 <a href="#">
@@ -152,7 +148,7 @@
 </svg>
                                     </div>
                                 <label>Banci</label>
-                                </a>    
+                                </a>
                             </div>
                         </li>
                         <li>
@@ -199,7 +195,7 @@
 </svg>
                                 </div>
                                 <label>Agentii</label>
-                                </a>    
+                                </a>
                             </div>
 
                         </li>
@@ -220,10 +216,10 @@
 		l-5.576,0.134V22.249z M22.985,25.777l-5.573,0.295v-1.285l5.573-0.213V25.777z M22.985,20.799l-5.573-0.045V19.47l5.573,0.125
 		V20.799z"/>
 </g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
-</svg>      
+</svg>
                                 </div>
                                 <label>Business</label>
-                                </a>    
+                                </a>
                             </div>
                         </li>
                         <li>
@@ -282,7 +278,7 @@
                                 <label>Licitatii</label>
                                 </a>
                             </div>
-                        </li>    
+                        </li>
                         </li>
                     </ul>
                 </div>
@@ -330,7 +326,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             <div class="tab-content">
                     <div id="one" class="container">
                                 <div class="col-md-3">
@@ -349,7 +345,7 @@
                                     </div>
                                 </div>
                     </div>
-                    
+
                     <div id="two" class="container">
                                 <div class="col-md-3">
                                     <div class="demo-mobile-container">
@@ -364,7 +360,7 @@
                                     </div>
                                 </div>
                     </div>
-                
+
                     <div id="three" class="container">
                                 <div class="col-md-3">
                                     <div class="demo-mobile-container">
@@ -380,7 +376,7 @@
                                     </div>
                                 </div>
                     </div>
-                
+
                     <div id="four" class="container">
                                 <div class="col-md-3">
                                     <div class="demo-mobile-container">
@@ -395,7 +391,7 @@
                                     </div>
                                 </div>
                     </div>
-                
+
                     <div id="five" class="device-mobile container">
                                 <div class="col-md-3">
                                     <div class="demo-mobile-container">
@@ -420,7 +416,7 @@
                                     </div>
                             </div>
                         </div>
-                
+
             </div>
         </div>
     </div>

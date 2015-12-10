@@ -15,10 +15,12 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         {!! $controls['deschidere'] !!}
     </div>
-    <div class="col-md-6">
+</div>
+<div class="row">
+    <div class="col-md-12">
         {!! $controls['id_tip_caracteristici'] !!}
     </div>
 </div>
@@ -65,6 +67,11 @@
 <div class="row">
     <div class="col-md-12">
         {!! $controls['detalii_2'] !!}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {!! $controls['photo'] !!}
     </div>
 </div>
 

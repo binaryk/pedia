@@ -45,6 +45,7 @@ class PreTerrainController extends ControlsTerrainController
 	public function save(){
 		//De facut verificare cu db daca aprobarea era null si s-a modificat sa se trimita mail cu confirmare
 		$data = Input::get('data');
+        dd($data);
 		$out  = Terrain::create($data+['user_id'=>Auth::user()->id]);
 		$out->characteristics()->attach($data['id_tip_caracteristici']);
 
@@ -57,6 +58,7 @@ class PreTerrainController extends ControlsTerrainController
 		$data = Input::get('data');
 		$this->model = Terrain::find($id);
 		$this->model->update($data);
+		$this->model->characteristics()->attach(@$data['id_tip_caracteristici']);
 		return Response::json(['success' => true]);
 	}
 

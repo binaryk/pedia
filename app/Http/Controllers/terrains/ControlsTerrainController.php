@@ -206,6 +206,18 @@ class ControlsTerrainController extends Controller
                     ->controltype('editbox')
                     ->class('form-control input-sm data-source')
                     ->out(),
+            'photo' =>
+                \Easy\Form\Editbox::make('~layouts.form.controls.fileboxes.imagebox')
+                    ->name('photo')
+                    ->ng_model('currentTerrain.photo')
+                    ->caption('Poze')
+                    ->route('')
+//                    ->value($model ? $model->photo : '')
+                    ->placeholder('')
+                    ->controlsource('photo')
+                    ->controltype('filebox')
+                    ->class('form-control input-sm data-source')
+                    ->out(),
         ];
     }
 }
